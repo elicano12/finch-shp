@@ -4,6 +4,7 @@ api/
 |── src/
 │   ├── config/          # Configuración de la base de datos y variables de entorno
 │   ├── controllers/     # Manejo de las solicitudes HTTP (peticiones de la API)
+│   ├── middleware  /    # Manejo de validaciones a nivel de Middleware
 │   ├── models/          # Definición de los esquemas/tablas (ORM)
 │   ├── repositories/    # Capa de acceso a datos (queries a la base de datos)
 │   ├── services/        # Lógica de negocio, cálculos, validaciones
@@ -14,31 +15,23 @@ api/
 └── package.json         # Dependencias del proyecto
 
 
-5. Agregar Captcha
-Puedes usar Google reCAPTCHA en el frontend, y luego validar el token en el backend con una petición a la API de reCAPTCHA.
 
-Valida el token en el backend:
+## How it works?
 
-javascript
-Copy code
-const axios = require('axios');
+Requirements are:
 
-exports.validateCaptcha = async (req, res, next) => {
-    const { token } = req.body;
+- PostgreSQL
+- Node.js 20+
+- Docker (optional)
 
-    try {
-        const response = await axios.post(`https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET}&response=${token}`);
-        if (response.data.success) {
-            next();
-        } else {
-            res.status(400).json({ message: 'Captcha inválido' });
-        }
-    } catch (error) {
-        res.status(500).json({ message: 'Error al validar el captcha' });
-    }
-};
-Próximos pasos:
-Implementar el CRUD de usuarios y ventas.
-Integrar autenticación con JWT y permisos basados en roles.
-Validar el captcha en el backend.
-Añadir validaciones adicionales, como la sumatoria de ventas y restricciones de visualización por rol.
+If you don't have a PostgreSQL instance, you can use the image created with Docker. Once you have Docker installed and running, run the following command:
+
+`docker-compose up -d`
+
+Then, from the client software of your preferred (I use Bveaver), you can connect to the database and create the table from your preferred database administrator, and insert the rows. In the scripts folder, I left the necessary scripts to be used in this challenge.
+
+To execute the API client you need the following steps.
+
+1. Install the dependencies `npm i`
+2. Add the .env file using the template in `.env.template`
+3. Run the service: `npm start`
