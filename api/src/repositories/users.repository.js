@@ -1,29 +1,36 @@
-const { User } = require("../models");
+const { models } = require("../config/databases/postgres");
+const bcrypt = require("bcrypt");
 
 const getUserByEmail = (email) => {
-    return User.findOne({ where: { email } });
+  return models.Users.findOne({ where: { email } });
 };
 
 const getUsers = () => {
-    return User.findAll(); 
+  return models.Users.findAll({ include: ["role"] });
 };
 
-const createUser = (user) => {
-    return User.create(user);
+const createUser = async (user) => {
+  const hash = await bcrypt.hash(user.password, 10);
+  const newUser = await models.Users.create({
+    ...user,
+    password: hash,
+  });
+  delete newUser.dataValues.password;
+  return newUser;
 };
 
 const updateUser = (user, id) => {
-    return User.update(user, { where: { id }, returning: true });
+  return models.Users.update(user, { where: { id }, returning: true });
 };
 
 const deleteUser = (id) => {
-    return User.destroy({ where: { id } });
+  return models.Users.destroy({ where: { id } });
 };
 
 module.exports = {
-    getUserByEmail,
-    getUsers,
-    createUser,
-    updateUser,
-    deleteUser,
-  };
+  getUserByEmail,
+  getUsers,
+  createUser,
+  updateUser,
+  deleteUser,
+};

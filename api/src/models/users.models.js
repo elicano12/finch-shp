@@ -1,21 +1,39 @@
-const { DataTypes } = require("sequelize");
-const sequelize = require("../config/databases/postgres");
+const { DataTypes, Model } = require("sequelize");
 
-const User = sequelize.define(
-  "users",
-  {
-    name: { type: DataTypes.STRING(50), allowNull: false },
-    email: { type: DataTypes.STRING(50), allowNull: false, unique: true },
-    password: { type: DataTypes.STRING(255), allowNull: false },
-    role_id: {
-      type: DataTypes.INTEGER,
-      references: { model: "roles", key: "id" },
-      allowNull: false,
-    },
-    created_at: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
-    updated_at: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
+const USERS_TABLE_NAME = "users";
+
+const UsersSchema = {
+  id: {
+    allowNull: false,
+    autoIncrement: true,
+    primaryKey: true,
+    type: DataTypes.INTEGER,
   },
-  { underscored: true, timestamps: false }
-);
+  name: { type: DataTypes.STRING(50), allowNull: false },
+  email: { type: DataTypes.STRING(50), allowNull: false, unique: true },
+  password: { type: DataTypes.STRING(255), allowNull: false },
+  role_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  created_at: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
+  updated_at: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
+};
 
-module.exports = User;
+class Users extends Model {
+  static associate(models) {
+    this.belongsTo(models.Roles, { as: "role", foreignKey: "role_id" });
+    this.hasMany(models.Sales, { foreignKey: "user_id" });
+  }
+
+  static config(sequelize) {
+    return {
+      sequelize,
+      tableName: USERS_TABLE_NAME,
+      modelName: "Users",
+      timestamps: false,
+      underscored: true,
+    };
+  }
+}
+module.exports = { Users, UsersSchema, USERS_TABLE_NAME };

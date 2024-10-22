@@ -28,7 +28,6 @@ const createSales = async (sales) => {
 };
 
 const updateSales = async (sales, id) => {
-  console.log(sales, id);
   const [rowUpdate, updatedSales] = await salesRepository.updateSales(sales, id);
 
   if (!updatedSales) {

@@ -44,13 +44,13 @@ const getLoginToken = async (email, password) => {
       throw new NotFoundError("User not found");
     }
   
-    const hash = await hashSync(user.password, 10);
-    const validPassword = await compareSync(password, hash);
+    // const hash = await hashSync(user.password, 10);
+    const validPassword = await compareSync(password, user.password);
   
     if (!validPassword) {
       throw new Error("Incorrect password");
     }
-  
+    delete user.dataValues.password;
     const token = generateToken(user);
     return {user, token};
   };
