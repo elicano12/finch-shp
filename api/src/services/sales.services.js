@@ -12,12 +12,23 @@ const getSales = async () => {
   return sales;
 };
 
+const getSalesByUserID = async (userId) => {
+  const sales = await salesRepository.getSalesByUserID(userId);
+
+  if (sales.length === 0) {
+    throw new NotFoundError("Sales not found for the given user ID");
+  }
+
+  return sales;
+};
+
 const createSales = async (sales) => {
   const newSales = await salesRepository.createSales(sales);
   return newSales;
 };
 
 const updateSales = async (sales, id) => {
+  console.log(sales, id);
   const [rowUpdate, updatedSales] = await salesRepository.updateSales(sales, id);
 
   if (!updatedSales) {
@@ -37,6 +48,7 @@ const deleteSales = async (id) => {
 
 module.exports = {
     getSales,
+    getSalesByUserID,
     createSales,
     updateSales,
     deleteSales

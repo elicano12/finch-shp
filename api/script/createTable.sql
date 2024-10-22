@@ -3,7 +3,7 @@ CREATE TABLE users (
     name VARCHAR(50) NOT NULL,
     email VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    rol_id INTEGER NOT NULL REFERENCES roles(id),
+    role_id INTEGER NOT NULL REFERENCES roles(id),
     created_at TIMESTAMPTZ DEFAULT NOW() NOT NULL,
     updated_at TIMESTAMPTZ DEFAULT NOW() NOT NULL
 );
@@ -36,3 +36,7 @@ INSERT INTO products (name) VALUES
 ('Credito de Consumo'), 
 ('Libranza Libre Inversión'), 
 ('Tarjeta de Credito');
+
+--  SELECT users.id, users.name, users.email, roles.name AS role_name, users.created_at, users.updated_at
+--       FROM users
+--       INNER JOIN roles ON users.role_id = roles.id

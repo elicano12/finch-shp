@@ -52,7 +52,7 @@ const getLoginToken = async (email, password) => {
     }
   
     const token = generateToken(user);
-    return token;
+    return {user, token};
   };
 
 module.exports = {

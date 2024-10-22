@@ -6,9 +6,10 @@ const UserRoutes = express.Router();
 
 UserRoutes.post('/login', userController.loginToken);
 
-UserRoutes.get("/", verifyToken, userController.getAllUsers);
-UserRoutes.post("/", verifyToken, userController.createUser);
-UserRoutes.put("/:id", verifyToken, userController.updateUser);
-UserRoutes.delete("/:id", verifyToken, userController.deleteUser);
+UserRoutes.use(verifyToken)
+UserRoutes.get("/", userController.getAllUsers);
+UserRoutes.post("/", userController.createUser);
+UserRoutes.put("/:id", userController.updateUser);
+UserRoutes.delete("/:id", userController.deleteUser);
 
 module.exports = UserRoutes;

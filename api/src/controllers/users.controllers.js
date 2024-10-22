@@ -44,9 +44,9 @@ const deleteUser = async (req, res, next) => {
 const loginToken = async (req, res, next) => {
   try {
     const { email, password } = req.body;
-    const token = await usersServices.getLoginToken(email, password);
+    const {user, token} = await usersServices.getLoginToken(email, password);
 
-    res.status(200).json({ token });
+    res.status(200).json({ user, token });
   } catch (error) {
     next(error);
   }

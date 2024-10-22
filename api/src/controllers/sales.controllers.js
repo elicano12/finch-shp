@@ -9,6 +9,16 @@ const getAllSales = async (req, res, next) => {
   }
 };
 
+const getByUserId = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const sales = await salesService.getSalesByUserID(id);
+    return res.status(200).json(sales);
+  } catch (err) {
+    next(err);
+  }
+};
+
 const createSales = async (req, res, next) => {
   try {
     const newSale = await salesService.createSales(req.body);
@@ -21,7 +31,8 @@ const createSales = async (req, res, next) => {
 const updateSales = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const updatedSales = await salesService.updateSales(req.body, id);
+    const {body} = req.body; 
+    const updatedSales = await salesService.updateSales(body, id);
     return res.status(200).json(updatedSales);
   } catch (err) {
     next(err);
@@ -43,6 +54,7 @@ const deleteSales = async (req, res, next) => {
 
 module.exports = {
   getAllSales,
+  getByUserId,
   createSales,
   updateSales,
   deleteSales,

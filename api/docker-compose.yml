@@ -4,9 +4,9 @@ services:
     image: postgis/postgis:latest
     container_name: my_postgres
     environment:
-      - POSTGRES_DB=banck_services
-      - POSTGRES_USER=banckusers
-      - POSTGRES_PASSWORD=123456Banck
+      - POSTGRES_DB=bank_services
+      - POSTGRES_USER=bankusers
+      - POSTGRES_PASSWORD=123456Bank
     ports:
       - '5432:5432'
     volumes:
